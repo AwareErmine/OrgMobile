@@ -3,7 +3,9 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme } from 'react-native';
+
 import FileScreen from './FileScreen.js';
+import File from './File.js'
 
 const Stack = createNativeStackNavigator();
 
@@ -31,11 +33,11 @@ const LightTheme = {
 
 export default function App() {
   const scheme = useColorScheme();
-
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={FileScreen} />
+        <Stack.Screen name="File" component={File} />
       </Stack.Navigator>
     </NavigationContainer>
   );

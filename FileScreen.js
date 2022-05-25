@@ -6,27 +6,29 @@ import { useTheme } from '@react-navigation/native';
 export default function FileScreen({ navigation }) {
   const { colors } = useTheme();
 
-  // TODO: Map each .org file to a little box which links to a screen https://reactnavigation.org/docs/params
   const DATA = [
     {
       id: 'adfsdaf',
       title: 'abc',
       excerpt: 'gfjkgg f gsdf gsdfg sdfg sdg sdf asdf sdf fdsg',
+      url: 'dsfsdf/sdfsdf',
     },
     {
       id: 'adfsdaadff',
       title: 'abc',
       excerpt: 'gfjkgg f gsdf gsdfgg dfasdfg gf ',
+      url: 'dsfsdf/sdfsdf'
     },
     {
       id: 'adfsdafasdfasaf',
       title: 'abc',
       excerpt: 'gfjkgg f gsdf gsdfg sdg sdfg',
+      url: 'dsfsdf/sdfsdf'
     },
   ]
 
   const renderItem = ({ item }) => (
-    <FileButton title={item.title} excerpt={item.excerpt} />
+    <FileButton title={item.title} excerpt={item.excerpt} url={item.url} navigation={navigation} />
   );
 
   return (
