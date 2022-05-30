@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, Text, SafeAreaView, FlatList, StatusBar } from 'react-native';
-import FileButton from './components/FileButton.js'
+import { FileButton } from './components/index.js'
 import { useTheme } from '@react-navigation/native';
 
-export default function FileScreen({ navigation }) {
+export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
 
   const DATA = [
@@ -33,8 +33,7 @@ export default function FileScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{
-      flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
+      ...styles.container,
       color: colors.text,
       backgroundColor: colors.background
     }}>
@@ -47,3 +46,10 @@ export default function FileScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+})

@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme } from 'react-native';
 
-import FileScreen from './FileScreen.js';
+import FilesScreen from './FilesScreen.js';
 import File from './File.js'
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +36,7 @@ export default function App() {
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={FileScreen} />
+        <Stack.Screen name="Home" component={FilesScreen} />
         <Stack.Screen name="File" component={File} />
       </Stack.Navigator>
     </NavigationContainer>
