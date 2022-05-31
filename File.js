@@ -3,9 +3,8 @@ import { SafeAreaView, View, Text, Dimensions, Platform } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
 import org from "org";
-import { WebView } from 'react-native-webview';
 
-import { FileText } from './components/index.js'
+import { FileText, ShowHTML } from './components/index.js'
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -37,7 +36,7 @@ export default function File({ route, navigation }) {
       suppressSubScriptHandling: false,
       suppressAutoLink: false
     });
-    setRendered(orgHTMLDocument);
+    setRendered(orgHTMLDocument.toString());
   }, [text])
 
   const { colors } = useTheme();
@@ -50,17 +49,14 @@ export default function File({ route, navigation }) {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <View
+      <ShowHTML
+        html={rendered}
+        dimensions={dimensions}
         style={{
           color: colors.text,
           height: dimensions.window.height / 2,
         }}
-      >
-        <WebView
-          originWhitelist={['*']}
-          source={{ html: rendered }}
-        />
-      </View>
+      />
       <FileText
         multiline
         numberOfLines={4}
