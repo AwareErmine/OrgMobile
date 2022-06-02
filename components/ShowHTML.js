@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTheme } from '@react-navigation/native';
-import { WebView } from 'react-native-webview';
+import MathJax from 'react-native-mathjax';
 import { StyleSheet, SafeAreaView } from 'react-native';
 
 export default function ShowHTML({ html, dimensions }) {
@@ -15,22 +15,35 @@ export default function ShowHTML({ html, dimensions }) {
         width: dimensions.window.width
       }}
     >
-      <WebView
-        injectedJavaScript={`
-          document.body.style.backgroundColor = 'hotpink';
-
-          window.onerror = function(message, sourcefile, lineno, colno, error) {
-            console.log("Message: " + message + " - Source: " + sourcefile + " Line: " + lineno + ":" + colno);
-            return true;
-          };
-          alert("I am here");
-          true;
-        `}
-        originWhitelist={['*']}
+      <MathJax
         source={{
           html: html,
         }}
+        mathJaxOptions={{
+          messageStyle: "none",
+          extensions: ["tex2jax.js"],
+          jax: ["input/TeX", "output/HTML-CSS"],
+          tex2jax: {
+            inlineMath: [
+              ["$", "$"],
+              ["\\(", "\\)"],
+            ],
+            displayMath: [
+              ["$$", "$$"],
+              ["\\[", "\\]"],
+            ],
+            processEscapes: true,
+          },
+          TeX: {
+            extensions: [
+              "AMSmath.js",
+              "AMSsymbols.js",
+              "noErrors.js",
+              "noUndefined.js",
+            ],
+          },
+        }}
       />
-    </SafeAreaView> 
+    </SafeAreaView>
   )
 }
