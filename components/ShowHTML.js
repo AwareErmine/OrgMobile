@@ -3,18 +3,11 @@ import { useTheme } from '@react-navigation/native';
 import MathJax from 'react-native-mathjax';
 import { StyleSheet, ScrollView } from 'react-native';
 
-export default function ShowHTML({ html, dimensions }) {
+export default function ShowHTML({ html, style }) {
   const { colors } = useTheme();
   // console.log(html);
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        color: colors.text,
-        height: dimensions.window.height / 2,
-        width: dimensions.window.width,
-      }}
-    >
+    <ScrollView style={style}>
       <MathJax
         html={html}
         mathJaxOptions={{

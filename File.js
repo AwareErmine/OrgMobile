@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView, Text, Dimensions, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { KeyboardAvoidingView, Text, Dimensions, Platform, Animated, PanResponder, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
 import org from "org";
@@ -14,8 +14,12 @@ export default function File({ route, navigation }) {
   // https://reactnative.dev/docs/textinput
 
   const [text, setText] = useState('Start typing!');
-  const [rendered, setRendered] = useState('<h1>Start typing!</h1>');
+  const [rendered, setRendered] = useState('Start typing!');
   const [dimensions, setDimensions] = useState({ window, screen });
+  // const [inputHeight, setInputHeight] = useState(dimensions.window.height / 2);
+  const [isDividerClicked, setIsDividerClicked] = useState(false);
+  // const [offSet, setOffSet] = useState(dimensions.window.height / 2);
+  const pan = useRef(new Animated.ValueXY()).current;
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
@@ -39,6 +43,29 @@ export default function File({ route, navigation }) {
     setRendered(orgHTMLDocument.toString());
   }, [text])
 
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        pan.setOffset({
+          x: pan.x._value,
+          y: pan.y._value
+        });
+        setIsDividerClicked(true);
+      },
+      onPanResponderMove: Animated.event(
+        [
+          null,
+          { dy: pan.y }
+        ]
+      ),
+      onPanResponderRelease: () => {
+        pan.flattenOffset();
+        setIsDividerClicked(false);
+      }
+    })
+  ).current;
+
   const { colors } = useTheme();
 
   const { url } = route.params; // for accessing the file itself later
@@ -48,18 +75,37 @@ export default function File({ route, navigation }) {
       // behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{
         flex: 1,
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
+
       <ShowHTML
         html={rendered}
-        dimensions={dimensions}
         style={{
+          flex: 1,
           color: colors.text,
           height: dimensions.window.height / 2,
+          width: dimensions.window.width,
         }}
       />
+
+      <Animated.View
+        style={{
+          transform: [{ translateX: pan.x }, { translateY: pan.y }]
+        }}
+        {...panResponder.panHandlers}
+      >
+        <View
+          style={{
+            height: 15,
+            width: dimensions.window.width,
+            backgroundColor: isDividerClicked ? '#666' : '#262626'
+          }}
+        />
+      </Animated.View>
+
       <FileText
         multiline
         numberOfLines={4}
@@ -73,12 +119,12 @@ export default function File({ route, navigation }) {
           width: dimensions.window.width,
 
           padding: 15,
-          fontSize: 23,
+          fontSize: 22,
 
           flex: 1,
-          justifyContent: 'flex-end',
         }}
       />
+
     </KeyboardAvoidingView>
   )
 }
