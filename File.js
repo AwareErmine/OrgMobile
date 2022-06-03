@@ -16,7 +16,7 @@ export default function File({ route, navigation }) {
   const [text, setText] = useState('Start typing!');
   const [rendered, setRendered] = useState('Start typing!');
   const [dimensions, setDimensions] = useState({ window, screen });
-  // const [inputHeight, setInputHeight] = useState(dimensions.window.height / 2);
+  const [topHeight, setTopHeight] = useState(dimensions.window.height / 2);
   const [isDividerClicked, setIsDividerClicked] = useState(false);
   // const [offSet, setOffSet] = useState(dimensions.window.height / 2);
   const pan = useRef(new Animated.ValueXY()).current;
@@ -53,12 +53,19 @@ export default function File({ route, navigation }) {
         });
         setIsDividerClicked(true);
       },
-      onPanResponderMove: Animated.event(
-        [
-          null,
-          { dy: pan.y }
-        ]
-      ),
+      onPanResponderMove: (e, gestureState) => {
+        setTopHeight(topHeight + gestureState.dy);
+
+        console.log(gestureState.dy);
+
+        Animated.event(
+          [
+            null,
+            { dy: pan.y }
+          ],
+          {useNativeDriver: false}
+        )(e, gestureState);
+      },
       onPanResponderRelease: () => {
         pan.flattenOffset();
         setIsDividerClicked(false);
@@ -81,20 +88,24 @@ export default function File({ route, navigation }) {
       }}
     >
 
-      <ShowHTML
-        html={rendered}
-        style={{
-          flex: 1,
-          color: colors.text,
-          height: dimensions.window.height / 2,
-          width: dimensions.window.width,
-        }}
-      />
-
       <Animated.View
         style={{
-          transform: [{ translateX: pan.x }, { translateY: pan.y }]
+          height: topHeight,
+          width: dimensions.window.width,
         }}
+      >
+        <ShowHTML
+          html={rendered}
+          style={{
+            flex: 1,
+            color: colors.text,
+            height: topHeight,
+            width: dimensions.window.width,
+          }}
+        />
+      </Animated.View>
+
+      <Animated.View
         {...panResponder.panHandlers}
       >
         <View
@@ -106,24 +117,31 @@ export default function File({ route, navigation }) {
         />
       </Animated.View>
 
-      <FileText
-        multiline
-        numberOfLines={4}
-        onChangeText={text => setText(text)}
-        value={text}
+      <Animated.View
         style={{
-          color: colors.text,
-          backgroundColor: colors.card,
-
-          height: dimensions.window.height / 2,
+          height: dimensions.window.height - topHeight,
           width: dimensions.window.width,
-
-          padding: 15,
-          fontSize: 22,
-
-          flex: 1,
         }}
-      />
+      >
+        <FileText
+          multiline
+          numberOfLines={4}
+          onChangeText={text => setText(text)}
+          value={text}
+          style={{
+            color: colors.text,
+            backgroundColor: colors.card,
+
+            height: dimensions.window.height - topHeight,
+            width: dimensions.window.width,
+
+            padding: 15,
+            fontSize: 22,
+
+            flex: 1,
+          }}
+        />
+      </Animated.View>
 
     </KeyboardAvoidingView>
   )
