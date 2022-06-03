@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, Dimensions, Platform } from 'react-native';
+import { KeyboardAvoidingView, Text, Dimensions, Platform } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
 import org from "org";
@@ -44,11 +44,14 @@ export default function File({ route, navigation }) {
   const { url } = route.params; // for accessing the file itself later
 
   return (
-    <SafeAreaView style={{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
+    <KeyboardAvoidingView
+      // behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <ShowHTML
         html={rendered}
         dimensions={dimensions}
@@ -65,18 +68,17 @@ export default function File({ route, navigation }) {
         style={{
           color: colors.text,
           backgroundColor: colors.card,
-          underlineColorAndroid: 'transparent',
 
           height: dimensions.window.height / 2,
           width: dimensions.window.width,
 
-          padding: '1.5rem',
-          fontSize: '1.25rem',
+          padding: 15,
+          fontSize: 23,
 
           flex: 1,
           justifyContent: 'flex-end',
         }}
       />
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }

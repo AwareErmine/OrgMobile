@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { useTheme } from '@react-navigation/native';
 import MathJax from 'react-native-mathjax';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 
 export default function ShowHTML({ html, dimensions }) {
   const { colors } = useTheme();
-  console.log(html);
+  // console.log(html);
   return (
-    <SafeAreaView
+    <ScrollView
       style={{
         flex: 1,
         color: colors.text,
         height: dimensions.window.height / 2,
-        width: dimensions.window.width
+        width: dimensions.window.width,
       }}
     >
       <MathJax
-        source={{
-          html: html,
-        }}
+        html={html}
         mathJaxOptions={{
           messageStyle: "none",
           extensions: ["tex2jax.js"],
@@ -44,6 +42,6 @@ export default function ShowHTML({ html, dimensions }) {
           },
         }}
       />
-    </SafeAreaView>
+    </ScrollView>
   )
 }

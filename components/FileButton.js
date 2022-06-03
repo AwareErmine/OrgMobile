@@ -9,16 +9,16 @@ export default function FileButton({ navigation, title, excerpt, url }) {
       style={{
         backgroundColor: colors.card,
         borderRadius: 5,
-        padding: '1.25rem',
-        margin: '1rem',
+        padding: 20,
+        margin: 5,
         flex: 1,
       }}
       onPress={() =>
         navigation.navigate('File', { url: url })
       }
     >
-      <Text style={{ fontSize: '2rem', color: colors.text, }}>{title}</Text>
-      <Text style={{ fontSize: '1.2rem', color: colors.text, }}>{excerpt}</Text>
+      <Text style={{ fontSize: 25, color: colors.text, }}>{title}</Text>
+      <Text style={{ fontSize: 20, color: colors.text, }}>{excerpt}</Text>
     </TouchableOpacity>
   )
 }
