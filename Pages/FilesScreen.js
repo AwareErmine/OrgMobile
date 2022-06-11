@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, SafeAreaView, FlatList, StatusBar, Platform } from 'react-native';
-import { FileButton } from './components/index.js'
+import { FileButton } from '../components/index.js'
 import { useTheme } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 
@@ -34,8 +34,8 @@ export default function FilesScreen({ navigation }) {
 
   const DATA = [
     {
-      id: 'adfsdaf',
-      title: 'abc',
+      id: 'sdfdsf',
+      title: 'testing',
       excerpt: 'gfjkgg f gsdf gsdfg sdfg sdg sdf asdf sdf fdsg',
       url: 'dsfsdf/sdfsdf',
     },

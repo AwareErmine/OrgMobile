@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 
 import org from "org";
 
-import { FileText, ShowHTML } from './components/index.js'
+import { FileText, ShowHTML } from '../components/index.js'
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -87,6 +87,7 @@ export default function File({ route, navigation }) {
           style={{
             flex: 1,
             color: colors.text,
+            backgroundColor: "#fff", // for the rendering why not
           }}
         />
       </KeyboardAvoidingView>

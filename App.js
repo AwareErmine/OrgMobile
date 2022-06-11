@@ -4,8 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme } from 'react-native';
 
-import FilesScreen from './FilesScreen.js';
-import File from './File.js'
+import { FilesScreen, File } from './Pages/index.js';
 
 const Stack = createNativeStackNavigator();
 
