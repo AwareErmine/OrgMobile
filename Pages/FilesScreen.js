@@ -6,55 +6,30 @@ import RNFS from 'react-native-fs';
 
 export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
+  const [files, setFiles] = useState();
 
-  // useEffect(() => {
-  //     RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-  //     .then((result) => {
-  //       console.log('GOT RESULT', result);
-  //
-  //       // stat the first file
-  //       return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-  //     })
-  //     .then((statResult) => {
-  //       if (statResult[0].isFile()) {
-  //         // if we have a file, read it
-  //         return RNFS.readFile(statResult[1], 'utf8');
-  //       }
-  //
-  //       return 'no file';
-  //     })
-  //     .then((contents) => {
-  //       // log the file contents
-  //       console.log(contents);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message, err.code);
-  //     });
-  // }, [])
-
-  const DATA = [
-    {
-      id: 'sdfdsf',
-      title: 'Math!',
-      excerpt: 'gfjkgg f gsdf gsdfg sdfg sdg sdf asdf sdf fdsg',
-      url: '/other.txt',
-    },
-    {
-      id: 'adfsdaadff',
-      title: 'abc',
-      excerpt: 'gfjkgg f gsdf gsdfgg dfasdfg gf ',
-      url: '/gaaaah.txt'
-    },
-    {
-      id: 'fjgdfjfjfjgjgjgj',
-      title: 'Test',
-      excerpt: 'gfjkgg f gsdf gsdfg sdg sdfg',
-      url: '/sdfsdf.txt'
-    },
-  ]
+  useEffect(() => {
+    RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+      .then((result) => {
+        const data = result
+          .filter(r => r.path.slice(-3) === "txt")
+            .map((r, i) => {
+              return {
+                id: i + r.path,
+                title: r.name,
+                excerpt: "testing",
+                path: r.path,
+              }
+            })
+        setFiles(data);
+      })
+      .catch((err) => {
+        console.log(err.message, err.code);
+      });
+  }, [])
 
   const renderItem = ({ item }) => (
-    <FileButton title={item.title} excerpt={item.excerpt} url={item.url} navigation={navigation} />
+    <FileButton title={item.title} excerpt={item.excerpt} path={item.path} navigation={navigation} />
   );
 
   return (
@@ -64,7 +39,7 @@ export default function FilesScreen({ navigation }) {
       backgroundColor: colors.background
     }}>
       <FlatList
-        data={DATA}
+        data={files}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         numColumns={2}

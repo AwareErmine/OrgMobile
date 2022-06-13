@@ -12,8 +12,7 @@ const screen = Dimensions.get("screen");
 
 export default function File({ route, navigation }) {
   const { colors } = useTheme();
-  const { url } = route.params; // for accessing the file itself later
-  const path = RNFS.DocumentDirectoryPath + url;
+  const { path } = route.params;
 
   const [text, setText] = useState('');
   const [rendered, setRendered] = useState('');
@@ -66,7 +65,7 @@ export default function File({ route, navigation }) {
         .catch((err) => {
           console.log(err.message);
         });
-    }, 500);
+    }, 1000);
     return () => clearTimeout(timer);
   }, [text]);
 
