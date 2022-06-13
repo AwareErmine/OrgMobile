@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import RNFS from 'react-native-fs';
 
-export default readFile(path) {
-  
-}
+export default async function readFile(path) {
+  const data = await RNFS.readFile(path, 'utf8')
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  return data;
+};

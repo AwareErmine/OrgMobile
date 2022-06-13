@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, SafeAreaView, FlatList, StatusBar, Platform } from 'react-native';
-import { FileButton } from '../components/index.js'
 import { useTheme } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 
+import { FileButton } from '../components/index.js'
+import { readFile } from '../Utils/index.js'
+
 export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
-  const [files, setFiles] = useState();
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
     RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
@@ -17,7 +19,7 @@ export default function FilesScreen({ navigation }) {
               return {
                 id: i + r.path,
                 title: r.name,
-                excerpt: "testing",
+                excerpt: readFile(r.path),
                 path: r.path,
               }
             })
