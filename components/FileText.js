@@ -11,6 +11,7 @@ export default function FileText({ onChangeText, value, style }, props) {
     >
       <TextInput
         style={style}
+        autoCorrect={false}
         onChangeText={onChangeText}
         scrollEnabled={true}
         value={value}

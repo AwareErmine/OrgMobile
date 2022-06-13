@@ -7,49 +7,49 @@ import RNFS from 'react-native-fs';
 export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
 
-  useEffect(() => {
-      RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-      .then((result) => {
-        console.log('GOT RESULT', result);
-
-        // stat the first file
-        return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-      })
-      .then((statResult) => {
-        if (statResult[0].isFile()) {
-          // if we have a file, read it
-          return RNFS.readFile(statResult[1], 'utf8');
-        }
-
-        return 'no file';
-      })
-      .then((contents) => {
-        // log the file contents
-        console.log(contents);
-      })
-      .catch((err) => {
-        console.log(err.message, err.code);
-      });
-  }, [])
+  // useEffect(() => {
+  //     RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+  //     .then((result) => {
+  //       console.log('GOT RESULT', result);
+  //
+  //       // stat the first file
+  //       return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+  //     })
+  //     .then((statResult) => {
+  //       if (statResult[0].isFile()) {
+  //         // if we have a file, read it
+  //         return RNFS.readFile(statResult[1], 'utf8');
+  //       }
+  //
+  //       return 'no file';
+  //     })
+  //     .then((contents) => {
+  //       // log the file contents
+  //       console.log(contents);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message, err.code);
+  //     });
+  // }, [])
 
   const DATA = [
     {
       id: 'sdfdsf',
-      title: 'testing',
+      title: 'Math!',
       excerpt: 'gfjkgg f gsdf gsdfg sdfg sdg sdf asdf sdf fdsg',
-      url: 'dsfsdf/sdfsdf',
+      url: '/other.txt',
     },
     {
       id: 'adfsdaadff',
       title: 'abc',
       excerpt: 'gfjkgg f gsdf gsdfgg dfasdfg gf ',
-      url: 'dsfsdf/sdfsdf'
+      url: '/gaaaah.txt'
     },
     {
-      id: 'adfsdafasdfasaf',
-      title: 'abc',
+      id: 'fjgdfjfjfjgjgjgj',
+      title: 'Test',
       excerpt: 'gfjkgg f gsdf gsdfg sdg sdfg',
-      url: 'dsfsdf/sdfsdf'
+      url: '/sdfsdf.txt'
     },
   ]
 

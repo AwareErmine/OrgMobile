@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Text, Dimensions, Platform, Animated, PanResponder, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import RNFS from 'react-native-fs';
 
 import org from "org";
 
@@ -10,19 +11,16 @@ const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 export default function File({ route, navigation }) {
-  // https://github.com/react-native-webview/react-native-webview/blob/master/docs/Getting-Started.md
-  // https://reactnative.dev/docs/textinput
+  const { colors } = useTheme();
+  const { url } = route.params; // for accessing the file itself later
+  const path = RNFS.DocumentDirectoryPath + url;
 
   const [text, setText] = useState('');
   const [rendered, setRendered] = useState('');
   const [dimensions, setDimensions] = useState({ window, screen });
   const [topHeight, setTopHeight] = useState(dimensions.window.height / 4);
   const [isDividerClicked, setIsDividerClicked] = useState(false);
-  // const [offSet, setOffSet] = useState(dimensions.window.height / 2);
   const pan = useRef(new Animated.ValueXY()).current;
-
-  const { colors } = useTheme();
-  const { url } = route.params; // for accessing the file itself later
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener(
@@ -32,7 +30,20 @@ export default function File({ route, navigation }) {
       }
     );
     return () => subscription?.remove();
-  });
+  }, []);
+
+  useEffect(() => {
+    const readFile = async (path) => {
+      await RNFS.readFile(path, 'utf8')
+        .then((data) => {
+          setText(data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    };
+    readFile(path);
+  }, []);
 
   useEffect(() => {
     const parser = new org.Parser();
@@ -44,7 +55,20 @@ export default function File({ route, navigation }) {
       suppressAutoLink: false
     });
     setRendered(orgHTMLDocument.toString());
-  }, [text])
+  }, [text]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      RNFS.writeFile(path, text, 'utf8')
+        .then((success) => {
+          console.log('FILE WRITTEN!');
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [text]);
 
   const panResponder = useRef(
     PanResponder.create({
