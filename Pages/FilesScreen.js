@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, SafeAreaView, FlatList, StatusBar, Platform } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import { useTheme, useIsFocused } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 
 import { FileButton, NewFileModal, NewFileButton } from '../components/index.js'
@@ -10,8 +10,10 @@ export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
   const [files, setFiles] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const isFocused = useIsFocused();
 
-  useEffect(() => {
+  const fetchData = () => {
+    console.log("Fetching!")
     RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
       .then((result) => {
         const data = result
@@ -29,7 +31,9 @@ export default function FilesScreen({ navigation }) {
       .catch((err) => {
         console.log(err.message, err.code);
       });
-  }, [])
+  }
+
+  useEffect(fetchData, [isFocused, navigation]);
 
   const renderItem = ({ item }) => (
     <FileButton title={item.title} excerpt={item.excerpt} path={item.path} navigation={navigation} />
@@ -52,6 +56,7 @@ export default function FilesScreen({ navigation }) {
         renderItem={renderItem}
         keyExtractor={item => item.id}
         numColumns={0}
+        extraData={files}
       />
 
       <NewFileButton

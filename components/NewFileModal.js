@@ -11,7 +11,7 @@ export default function NewFileModal({ modalVisible, setModalVisible, navigation
   const { colors } = useTheme();
 
   const onSubmitEdit = () => {
-    const path = (Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) + "/" + input.replace(/\s+/g, '-').replace(/\//g, '-') + '.txt';
+    const path = (Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) + "/" + input.replace(/[\W_]+/g, "-") + '.txt';
     navigation.navigate('File', { path: path });
     setModalVisible(false);
   }
@@ -19,7 +19,6 @@ export default function NewFileModal({ modalVisible, setModalVisible, navigation
   return (
     <View>
       <Modal
-        animationType="fade"
         transparent={true}
         isVisible={modalVisible}
         onRequestClose={() => {
@@ -35,7 +34,7 @@ export default function NewFileModal({ modalVisible, setModalVisible, navigation
               style={{
                 color: '#000',
                 fontSize: 18,
-                padding: 15
+                padding: 20
               }}
               onChangeText={onChangeInput}
               value={input}
@@ -56,9 +55,10 @@ export default function NewFileModal({ modalVisible, setModalVisible, navigation
               <Text style={{
                 color: "#fff",
                 textAlign: "center",
+                fontWeight: "bold"
               }}
               >
-                Submit!
+                SUBMIT
               </Text>
             </TouchableOpacity>
           </View>
