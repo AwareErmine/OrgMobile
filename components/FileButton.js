@@ -8,7 +8,7 @@ export default function FileButton({ navigation, title, excerpt, path }) {
 
   useEffect(() => {
     excerpt.then((result) => {
-      setXrpt(result.slice(0, 50).replace('\n', ' '));
+      setXrpt(result.slice(0, 40).replace(/(\r\n|\n|\r)/gm, "  ") + "...");
     })
   }, [])
 
@@ -25,8 +25,8 @@ export default function FileButton({ navigation, title, excerpt, path }) {
         navigation.navigate('File', { path: path })
       }
     >
-      <Text style={{ fontSize: 25, color: colors.text, }}>{title.substring(0, title.length-4).replace('-', ' ')}</Text>
-      <Text style={{ fontSize: 20, color: colors.text, }}>{xrpt}</Text>
+      <Text style={{ fontSize: 22, color: colors.text, fontWeight: 'bold' }}>{title.substring(0, title.length-4).replace('-', ' ')}</Text>
+      <Text style={{ fontSize: 18, color: colors.text, }}>{xrpt}</Text>
     </TouchableOpacity>
   )
 }

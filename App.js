@@ -12,9 +12,9 @@ const DarkTheme = {
   dark: true,
   colors: {
     primary: '#020529',
-    background: '#020529',
-    card: '#36395c',
-    text: '#fff',
+    background: '#000',
+    card: '#121212',
+    text: '#9c8911',
     border: '#36395c',
   },
 };

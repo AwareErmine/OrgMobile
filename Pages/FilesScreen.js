@@ -3,12 +3,13 @@ import { StyleSheet, Text, SafeAreaView, FlatList, StatusBar, Platform } from 'r
 import { useTheme } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 
-import { FileButton } from '../components/index.js'
+import { FileButton, NewFileModal, NewFileButton } from '../components/index.js'
 import { readFile } from '../Utils/index.js'
 
 export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
   const [files, setFiles] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     RNFS.readDir(Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
@@ -40,11 +41,21 @@ export default function FilesScreen({ navigation }) {
       color: colors.text,
       backgroundColor: colors.background
     }}>
+      <NewFileModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+
       <FlatList
         data={files}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        numColumns={2}
+        numColumns={0}
+      />
+
+      <NewFileButton
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
       />
     </SafeAreaView>
   );
