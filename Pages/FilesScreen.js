@@ -3,13 +3,14 @@ import { StyleSheet, Text, SafeAreaView, FlatList, StatusBar, Platform } from 'r
 import { useTheme, useIsFocused } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 
-import { FileButton, NewFileModal, NewFileButton } from '../components/index.js'
+import { FileButton, NewFileModal, NewFileButton, DeleteFilesButton, ConfirmationModal } from '../components/index.js'
 import { readFile } from '../Utils/index.js'
 
 export default function FilesScreen({ navigation }) {
   const { colors } = useTheme();
   const [files, setFiles] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [newFileModalVisible, setNewFileModalVisible] = useState(false);
+  const [deleteFileModalVisible, setDeleteFileModalVisible] = useState(false);
   const isFocused = useIsFocused();
 
   const fetchData = () => {
@@ -27,7 +28,8 @@ export default function FilesScreen({ navigation }) {
                 isSelected: false,
               }
             })
-        setFiles(JSON.parse(JSON.stringify(data.reverse())));
+        let arrayCopy = [...data]; // create TRUE copy
+        setFiles(arrayCopy.reverse());
       })
       .catch((err) => {
         console.log(err.message, err.code);
@@ -38,10 +40,10 @@ export default function FilesScreen({ navigation }) {
     files.forEach((item, i) => {
       if (item.id == id) {
         item.isSelected = !item.isSelected;
-        console.log(item.isSelected);
       }
     });
-    setFiles(JSON.parse(JSON.stringify(files))); //?
+    let arrayCopy = [...files]; // create TRUE copy
+    setFiles(arrayCopy); //?
   }
 
   useEffect(fetchData, [isFocused, navigation]);
@@ -65,9 +67,16 @@ export default function FilesScreen({ navigation }) {
       backgroundColor: colors.background
     }}>
       <NewFileModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        modalVisible={newFileModalVisible}
+        setModalVisible={setNewFileModalVisible}
         navigation={navigation}
+      />
+
+      <ConfirmationModal
+        modalVisible={deleteFileModalVisible}
+        setModalVisible={setDeleteFileModalVisible}
+        files={files}
+        setFiles={setFiles}
       />
 
       <FlatList
@@ -79,8 +88,14 @@ export default function FilesScreen({ navigation }) {
       />
 
       <NewFileButton
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        modalVisible={newFileModalVisible}
+        setModalVisible={setNewFileModalVisible}
+      />
+
+      <DeleteFilesButton
+        modalVisible={deleteFileModalVisible}
+        setModalVisible={setDeleteFileModalVisible}
+        files={files}
       />
     </SafeAreaView>
   );
