@@ -25,7 +25,7 @@ export default function FileButton({ navigation, title, excerpt, path }) {
         navigation.navigate('File', { path: path })
       }
     >
-      <Text style={{ fontSize: 22, color: colors.text, fontWeight: 'bold' }}>{title.substring(0, title.length-4).replace('-', ' ')}</Text>
+      <Text style={{ fontSize: 22, color: colors.text, fontWeight: 'bold' }}>{title.substring(0, title.length-4).replace(/-/g, " ")}</Text>
       <Text style={{ fontSize: 18, color: colors.text, }}>{xrpt}</Text>
     </TouchableOpacity>
   )

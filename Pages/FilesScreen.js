@@ -24,7 +24,7 @@ export default function FilesScreen({ navigation }) {
                 path: r.path,
               }
             })
-        setFiles(data);
+        setFiles(data.reverse());
       })
       .catch((err) => {
         console.log(err.message, err.code);
@@ -44,6 +44,7 @@ export default function FilesScreen({ navigation }) {
       <NewFileModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        navigation={navigation}
       />
 
       <FlatList

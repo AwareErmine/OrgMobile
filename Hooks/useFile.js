@@ -6,7 +6,11 @@ export default function useFile(path) {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    readFile(path).then((result) => setText(result));
+    readFile(path)
+      .then((result) => setText(result))
+      .catch((err) => {
+        console.log(err.message, err.code);
+      });
   }, []);
 
   return {

@@ -8,10 +8,19 @@ export default function NewFileButton({ modalVisible, setModalVisible }) {
 
   return (
     <TouchableOpacity
-      style={styles.button}
+      style={{
+        ...styles.button,
+        backgroundColor: colors.text,
+      }}
       onPress={() => setModalVisible(true)}
     >
-      <Text style={styles.textStyle}>New File</Text>
+      <Text style={{
+        ...styles.textStyle,
+        color: colors.background,
+      }}
+      >
+        New File
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -24,10 +33,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    backgroundColor: '#121212',
   },
   textStyle: {
-    color: "white",
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 18,

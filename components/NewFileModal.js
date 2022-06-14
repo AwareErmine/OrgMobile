@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { View, KeyboardAvoidingView, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from "react-native";
+import RNFS from 'react-native-fs';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from "react-native";
 import Modal from "react-native-modal";
 import { useDimensions } from '../Hooks/index.js';
 import { useTheme } from '@react-navigation/native';
 
-export default function NewFileModal({ modalVisible, setModalVisible }) {
+export default function NewFileModal({ modalVisible, setModalVisible, navigation }) {
   const [input, onChangeInput] = useState('');
   const dimensions = useDimensions();
   const { colors } = useTheme();
+
+  const onSubmitEdit = () => {
+    const path = (Platform.OS === "ios" ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) + "/" + input.replace(/\s+/g, '-').replace(/\//g, '-') + '.txt';
+    navigation.navigate('File', { path: path });
+    setModalVisible(false);
+  }
 
   return (
     <View>
@@ -27,13 +34,33 @@ export default function NewFileModal({ modalVisible, setModalVisible }) {
             <TextInput
               style={{
                 color: '#000',
+                fontSize: 18,
+                padding: 15
               }}
               onChangeText={onChangeInput}
               value={input}
               placeholder="File name here"
               placeholderTextColor={"#bbb"}
               autoFocus={true}
+              onSubmitEdit={onSubmitEdit}
+              autoCorrect={false}
             />
+            <TouchableOpacity
+              onPress={onSubmitEdit}
+              style={{
+                borderRadius: 10,
+                backgroundColor: "#000",
+                padding: 15,
+              }}
+            >
+              <Text style={{
+                color: "#fff",
+                textAlign: "center",
+              }}
+              >
+                Submit!
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -50,27 +77,12 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: "#fff",
-    padding: 18,
+    padding: 0,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2
     },
-    borderRadius: 20,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
+    borderRadius: 10,
   },
 });
