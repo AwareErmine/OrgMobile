@@ -24,19 +24,38 @@ export default function FilesScreen({ navigation }) {
                 title: r.name,
                 excerpt: readFile(r.path),
                 path: r.path,
+                isSelected: false,
               }
             })
-        setFiles(data.reverse());
+        setFiles(JSON.parse(JSON.stringify(data.reverse())));
       })
       .catch((err) => {
         console.log(err.message, err.code);
       });
   }
 
+  const onLongPress = (id) => {
+    files.forEach((item, i) => {
+      if (item.id == id) {
+        item.isSelected = !item.isSelected;
+        console.log(item.isSelected);
+      }
+    });
+    setFiles(JSON.parse(JSON.stringify(files))); //?
+  }
+
   useEffect(fetchData, [isFocused, navigation]);
 
   const renderItem = ({ item }) => (
-    <FileButton title={item.title} excerpt={item.excerpt} path={item.path} navigation={navigation} />
+    <FileButton
+      title={item.title}
+      excerpt={item.excerpt}
+      path={item.path}
+      id={item.id}
+      isSelected={item.isSelected}
+      onLongPress={onLongPress}
+      navigation={navigation}
+    />
   );
 
   return (
